@@ -1,0 +1,42 @@
+#idLogo{
+    width: 8vw ;
+    height: ;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+}
+
+ul{
+    list-style-type: none;
+    display: flex;
+}
+
+ul li a{
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    padding: 20px;
+    border-radius: 40%;
+}
+
+ul li a:hover{
+    background-color: blue;
+}
+
+ul li {
+    margin-left: 20px;
+}
+
+nav{
+    margin-top: 12px;
+    display: flex;
+}
+
+.inputClass{
+    border-radius: 10px;
+}
+
+fieldset{
+    display: flex;
+}
