@@ -60,6 +60,7 @@ function searchedSerie(){
     
 function addToWatch(event){
     const row = event.target.closest("tr");
+
     row.querySelector(".btn-outline-secondary").className = "btn btn-outline-danger"
     row.querySelector(".fa-plus").className = "fa fa-trash"
 
