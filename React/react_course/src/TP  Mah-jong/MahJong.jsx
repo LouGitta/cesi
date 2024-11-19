@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./components/Card";
 
-export default function App() {
+export default function MahJong() {
     const [tuiles, setTuiles] = useState([])
     const list = [...Array(42)].map((elem, i) => i)
     

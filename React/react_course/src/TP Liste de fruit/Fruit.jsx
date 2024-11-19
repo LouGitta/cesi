@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FruitRow from "./components/FruitRow";
 
-export default function App() {
+export default function Fruit() {
     const [newFruit, setNewFruit] = useState("");
     const [fruits, setFruits] = useState([
         { id: 1, name: "cerise" },
