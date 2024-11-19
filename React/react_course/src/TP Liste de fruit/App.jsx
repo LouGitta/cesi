@@ -13,14 +13,13 @@ export default function App() {
     
 
       function handleAddFruit(){
-        const ids = fruits.map((fruit) => fruit.id)
+        const ids = fruits.map((fruit) => +fruit.id)
         setFruits([...fruits, {id:Math.max(...ids)+1, name: newFruit}])
 
       }
 
       function handleDeleteFruit(id) {
         setFruits(fruits.filter((fruit) => fruit.id != id))
-        console.log(id)
       }
 
     return (
