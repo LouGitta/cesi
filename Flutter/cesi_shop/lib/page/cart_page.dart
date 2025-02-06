@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../model/cart.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -10,11 +14,14 @@ class CartPage extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text('Panier'),
         ),
-        body: Stack(children: [
-          LineTotalPrice(),
-          InfoEmptyCart(),
-        ],
-      ),
+        body:
+          (context.watch<Cart>().qty > 0)
+            ? Column(children: [
+                LineTotalPrice(),
+                Flexible(child: ListProductsCart())
+              ]
+            )
+            : Stack(children: [LineTotalPrice(), InfoEmptyCart()]),
     );
   }
 }
@@ -29,6 +36,7 @@ class InfoEmptyCart extends StatelessWidget {
     return Center(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Text(context.watch<Cart>().qty.toString()),
         Text("Votre panier est actuellement vide"),
         Icon(Icons.image),
       ],
@@ -38,9 +46,7 @@ class InfoEmptyCart extends StatelessWidget {
 }
 
 class LineTotalPrice extends StatelessWidget {
-  const LineTotalPrice({
-    super.key,
-  });
+  const LineTotalPrice({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +56,54 @@ class LineTotalPrice extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
         Text("Votre panier total est de "),
-        Text("0.00 €"),
+        Text("${context.watch<Cart>().totalPrice} €"),
       ],),
+    );
+  }
+}
+
+class ListProductsCart extends StatelessWidget {
+  const ListProductsCart({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return ListView.builder(
+      itemCount: context.watch<Cart>().qty,
+      itemBuilder: (context,index){
+        final product = context.watch<Cart>().products[index];
+        return InkWell(
+          onTap: () {
+            context.go("/detail", extra: product);
+          },
+          child: ListTile(
+            leading: Image.network(
+                product.image,
+                loadingBuilder: (_,child,___)=>
+                    SizedBox(
+                      height: 48,
+                      width: 48,
+                      child: child,
+                    )
+            ),
+            title: Text(product.title),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    style: Theme.of(context).textTheme.titleMedium,
+                    product.priceEuro()
+                ),
+              ],
+            ),
+            trailing: TextButton(
+                onPressed: () {
+                  context.read<Cart>().remove(product);
+                },
+                child: Text("Supprimer")
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cesi_shop/model/product.dart';
 import 'package:cesi_shop/page/cart_page.dart';
 import 'package:cesi_shop/page/details_page.dart';
 import 'package:cesi_shop/page/list_products_page.dart';
@@ -10,14 +11,8 @@ final router = GoRouter(
         path: '/',
         builder: (_, __) => ListProductsPage(),
         routes: [
-          GoRoute(
-            path: "detail",
-            builder: (_,__)=>DetailsPage(),
-          ),
-          GoRoute(
-            path: "cart",
-            builder: (_,__)=>CartPage(),
-          ),
+          GoRoute(path: "detail", builder: (_,state)=>DetailsPage(product: state.extra as Product)),
+          GoRoute(path: "cart", builder: (_,__)=>CartPage()),
         ]
       )
     ]

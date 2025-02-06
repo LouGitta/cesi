@@ -1,14 +1,27 @@
+import 'package:cesi_shop/model/product.dart';
 import 'package:cesi_shop/page/list_products_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../model/cart.dart';
 
 class DetailsPage extends StatelessWidget {
-  const DetailsPage({super.key});
+  Product product= Product(
+    title: 'iPhone 14 Pro',
+    description: 'Dernier smartphone Apple avec puce A16 Bionic',
+    category: 'Électronique',
+    image: 'https://picsum.photos/id/1/500/180',
+    price: 999.99,
+  );
+  DetailsPage({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      Scaffold(
       appBar: AppBar(
+        title: Text(product.title),
         actions: [
           IconButton(onPressed: (){
             context.go("/cart");
@@ -16,44 +29,70 @@ class DetailsPage extends StatelessWidget {
           )
         ],
         backgroundColor: Theme.of(context).colorScheme.inversePrimary ,
-        title: Text('Saisie Shop'),
 
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Image.network(
-                context.products[index].image,
-                loadingBuilder: (_,child,___)=>
-                    SizedBox(
-                      height: 48,
-                      width: 48,
-                      child: child,
-                    )
+              SizedBox(
+                height: 180,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(product.image),
               ),
-            ]
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(products.title),
-              Text(products.price)
             ],
           ),
-          Row(
-            children: [
-              Text(products.description)
-            ],
+          LineTitlePrice(product: product),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(product.description),
           ),
-          spacer(),
-          Row(
-            children: [
-              Button
-            ],
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: FilledButton(
+                onPressed: (){
+                  context.read<Cart>().add(product);
+                },
+                child: Text("Ajouter au panier"),
+              ),
+            ),
           )
         ],
       )
+    );
+  }
+}
+
+class LineTitlePrice extends StatelessWidget {
+  const LineTitlePrice({
+    super.key,
+    required this.product,
+  });
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child:
+              Text(
+                product.title,
+                style: Theme.of(context).textTheme.headlineMedium,
+              )
+          ),
+          Text(product.price.toString()+'€')
+        ],
+      ),
     );
   }
 }
