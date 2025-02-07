@@ -29,6 +29,10 @@ class ListProductsPage extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(onPressed: (){
+            context.go("/shops");
+          }, icon: Icon(Icons.store_mall_directory)
+          ),
+          IconButton(onPressed: (){
             context.go("/cart");
           }, icon: Badge(
               label: Text(context.watch<Cart>().qty.toString()),

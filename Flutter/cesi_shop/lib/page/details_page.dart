@@ -2,6 +2,7 @@ import 'package:cesi_shop/model/product.dart';
 import 'package:cesi_shop/page/list_products_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../model/cart.dart';
@@ -60,12 +61,25 @@ class DetailsPage extends StatelessWidget {
                 child: Text("Ajouter au panier"),
               ),
             ),
-          )
+          ),
+          IconButton(
+              onPressed: () {
+                ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.front).then((v) {
+                  if (v != null) {
+                    snackText(context, v.path);
+                  }
+                });
+              }, icon: Icon(Icons.camera_alt))
+
+
         ],
       )
     );
   }
 }
+
+void snackText(BuildContext ctx, String text) =>
+    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(text)));
 
 class LineTitlePrice extends StatelessWidget {
   const LineTitlePrice({
